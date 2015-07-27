@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<GridPane hgap="4.0" layoutX="14.0" layoutY="35.0" vgap="4.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.bsd.hawkularFxReports.FxReports">
+   <children>
+      <Label layoutX="140.0" layoutY="40.0" text="Server URL" />
+      <PasswordField fx:id="passwordField" layoutX="251.0" layoutY="129.0" promptText="password" text="password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="userField" layoutX="251.0" layoutY="81.0" promptText="username" text="jdoe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="urlField" layoutX="251.0" layoutY="35.0" prefHeight="26.0" prefWidth="294.0" promptText="Server URL" text="http://localhost:8080/" GridPane.columnIndex="1" />
+      <Label layoutX="140.0" layoutY="134.0" text="Password" GridPane.rowIndex="2" />
+      <Label layoutX="140.0" layoutY="86.0" text="Username" GridPane.rowIndex="1" />
+      <Button fx:id="goButton" mnemonicParsing="false" onAction="#generateReport" text="GO!"
+              GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </Button>
+     <TextField fx:id="msgField" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4"/>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <padding>
+      <Insets bottom="30.0" left="20.0" right="20.0" />
+   </padding>
+</GridPane>

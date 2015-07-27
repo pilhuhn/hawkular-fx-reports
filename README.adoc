@@ -1,0 +1,5 @@
+= Hawkular-Fx-Reports
+
+Some playing with JavaFx, http://hawkular.org[Hawkular] and DynamicReports
+to generate reports out of the Hawkular data.
+
