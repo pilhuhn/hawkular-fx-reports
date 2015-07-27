@@ -3,3 +3,16 @@
 Some playing with JavaFx, http://hawkular.org[Hawkular] and DynamicReports
 to generate reports out of the Hawkular data.
 
+== Build
+
+[source,shell]
+---
+gradle --daemon jar
+---
+
+== Run
+
+[source,shell]
+---
+java -jar build/libs/hawkular-fx-reports-1.0-SNAPSHOT.jar
+---
