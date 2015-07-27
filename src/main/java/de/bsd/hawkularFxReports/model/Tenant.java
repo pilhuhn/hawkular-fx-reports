@@ -17,7 +17,7 @@
 package de.bsd.hawkularFxReports.model;
 
 /**
- * TODO document me
+ * A tenant in Hawkular
  *
  * @author Heiko W. Rupp
  */

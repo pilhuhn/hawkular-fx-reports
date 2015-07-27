@@ -16,9 +16,6 @@
  */
 package de.bsd.hawkularFxReports.details;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
-import static net.sf.dynamicreports.report.builder.DynamicReports.report;
-
 import java.util.List;
 import java.util.Map;
 
@@ -26,43 +23,37 @@ import de.bsd.hawkularFxReports.model.HawkResource;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.column.Columns;
-import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
- * TODO document me
+ * Report about WildFly servers in Hawkular
  *
  * @author Heiko W. Rupp
  */
-public class WFResourceDetailsBuilder extends AbstractSimpleExpression<JasperReportBuilder> {
+public class WFResourceDetailsBuilder extends AbstractDetailBuilder {
 
-    private List<HawkResource> resources;
 
-    public WFResourceDetailsBuilder(List<HawkResource> resources) {
-        this.resources = resources;
+    public WFResourceDetailsBuilder() {
+        super("WildFly Servers");
     }
 
     @Override
     public JasperReportBuilder evaluate(ReportParameters reportParameters) {
-        JasperReportBuilder report = report();
 
-        report.title(cmp.text("WildFly Servers")
-                .setStyle(Styles.style().bold()))
-                .setDataSource(resources)
-                .addNoData(cmp.text("No data available"))
-                .columns(Columns.column("Name", "name", String.class)
-                        , (Columns.column("Host", "hostname", String.class))
-                        , (Columns.column("Version", "version", String.class))
-                );
+        report.columns(Columns.column("Name", "name", String.class).setTitleStyle(bold),
+                       Columns.column("Host", "hostname", String.class).setTitleStyle(bold),
+                       Columns.column("Version", "version", String.class).setTitleStyle(bold)
+                )
+        ;
 
         return report;
     }
 
 
     /**
-     * TODO document me
+     * Datasource for this report
      *
      * @author Heiko W. Rupp
      */

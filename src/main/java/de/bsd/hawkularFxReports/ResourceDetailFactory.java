@@ -29,7 +29,7 @@ import de.bsd.hawkularFxReports.model.HawkResource;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 
 /**
- * TODO document me
+ * Factory for individual sub reports at resource level
  *
  * @author Heiko W. Rupp
  */
@@ -46,6 +46,10 @@ public class ResourceDetailFactory {
         return types.contains(type);
     }
 
+    public static int itemCount() {
+        return types.size();
+    }
+
     public static SubreportBuilder getForType(String type, List<HawkResource> resources) {
 
         SubreportBuilder builder = null;
@@ -53,22 +57,22 @@ public class ResourceDetailFactory {
         switch (type) {
             case "URL":
 
-                builder = cmp.subreport(new UrlResourceDetailBuilder(resources))
+                builder = cmp.subreport(new UrlResourceDetailBuilder())
                         .setDataSource(new UrlResourceDetailBuilder.UrlResourceDatasource(resources));
 
                 break;
             case "WildFly Server":
-                builder = cmp.subreport(new WFResourceDetailsBuilder(resources))
+                builder = cmp.subreport(new WFResourceDetailsBuilder())
                         .setDataSource(new WFResourceDetailsBuilder.WFResourceDatasource(resources));
                 break;
             case "Servlet":
-                builder = cmp.subreport(new ServletResourceDetailBuilder(resources))
+                builder = cmp.subreport(new ServletResourceDetailBuilder())
                         .setDataSource(new ServletResourceDetailBuilder.ServletResourceDatasource(resources))
                 ;
                 break;
 
             case "Deployment":
-                builder = cmp.subreport(new DeploymentResourceDetailBuilder(resources))
+                builder = cmp.subreport(new DeploymentResourceDetailBuilder())
                         .setDataSource(new DeploymentResourceDetailBuilder.DeploymentResourceDatasource(resources))
                 ;
                 break;

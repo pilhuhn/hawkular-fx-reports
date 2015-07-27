@@ -16,9 +16,6 @@
  */
 package de.bsd.hawkularFxReports.details;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
-import static net.sf.dynamicreports.report.builder.DynamicReports.report;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,39 +24,29 @@ import de.bsd.hawkularFxReports.model.HawkResource;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.column.Columns;
-import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
- * TODO document me
+ * Report about deployments in Hawkular
  *
  * @author Heiko W. Rupp
  */
-public class DeploymentResourceDetailBuilder extends AbstractSimpleExpression<JasperReportBuilder> {
+public class DeploymentResourceDetailBuilder extends AbstractDetailBuilder {
 
 
-    private final List<HawkResource> resources;
-
-    public DeploymentResourceDetailBuilder(List<HawkResource> resources) {
-
-        this.resources = resources;
+    public DeploymentResourceDetailBuilder() {
+        super("Deployments");
     }
 
     @Override
     public JasperReportBuilder evaluate(ReportParameters reportParameters) {
-        JasperReportBuilder report = report();
 
-        report.title(cmp.text("Deployments")
-                .setStyle(Styles.style().bold()))
-                .setDataSource(resources)
-                .addNoData(cmp.text("No data available"))
-                .columns(
-                        Columns.column("Name", "name", String.class)
-                        , (Columns.column("Feed", "feedId", String.class)));
+        report.columns(
+                Columns.column("Name", "name", String.class).setTitleStyle(bold),
+                Columns.column("Feed", "feedId", String.class).setTitleStyle(bold));
 
-//        report.setDataSource(new UrlResourceDatasource(resources))
         return report;
     }
 

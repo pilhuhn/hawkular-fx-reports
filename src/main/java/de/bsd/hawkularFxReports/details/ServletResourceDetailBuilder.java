@@ -16,45 +16,34 @@
  */
 package de.bsd.hawkularFxReports.details;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
-import static net.sf.dynamicreports.report.builder.DynamicReports.report;
-
 import java.util.List;
 
 import de.bsd.hawkularFxReports.model.HawkResource;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.column.Columns;
-import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
- * TODO document me
+ * Report about servlets in Hawkular
  *
  * @author Heiko W. Rupp
  */
-public class ServletResourceDetailBuilder extends AbstractSimpleExpression<JasperReportBuilder> {
+public class ServletResourceDetailBuilder extends AbstractDetailBuilder {
 
 
-    private final List<HawkResource> resources;
 
-    public ServletResourceDetailBuilder(List<HawkResource> resources) {
-
-        this.resources = resources;
+    public ServletResourceDetailBuilder() {
+        super("Servlets");
     }
 
     @Override
     public JasperReportBuilder evaluate(ReportParameters reportParameters) {
-        JasperReportBuilder report = report();
 
-        report.title(cmp.text("Servlet Resources")
-                .setStyle(Styles.style().bold()))
-                .setDataSource(resources)
-                .addNoData(cmp.text("No data available"))
-                .columns(
-                        Columns.column("Name", "name", String.class)
+        report.columns(
+                Columns.column("Name", "name", String.class).setTitleStyle(bold)
                 );
 
         return report;

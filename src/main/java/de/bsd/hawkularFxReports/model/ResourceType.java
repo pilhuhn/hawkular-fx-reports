@@ -19,7 +19,7 @@ package de.bsd.hawkularFxReports.model;
 import java.util.Map;
 
 /**
- * TODO document me
+ * A resource type in Hawkular
  *
  * @author Heiko W. Rupp
  */
