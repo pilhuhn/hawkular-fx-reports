@@ -81,6 +81,11 @@ public class FxReports extends Application {
             return;
         }
         progressBar.setProgress(10.0);
+        ValueKeeper.getInstance().setTenantId(tenant);
+        ValueKeeper.getInstance().setUser(userField.getText());
+        ValueKeeper.getInstance().setBaseUrl(getBaseUrlFromField());
+        ValueKeeper.getInstance().setBase64Creds(getBase64Credentials());
+
 
         Generator generator = new Generator(this, tenant);
         Thread t = new Thread(generator);
@@ -141,7 +146,7 @@ public class FxReports extends Application {
      * not end in /, append a /
      * @return base url.
      */
-    String getBaseUrlFromField() {
+    private String getBaseUrlFromField() {
         String text = urlField.getText();
         if (!text.endsWith("/")) {
             text += "/";
@@ -149,7 +154,7 @@ public class FxReports extends Application {
         return text;
     }
 
-    String getBase64Credentials() {
+    private String getBase64Credentials() {
         String base64Encode;
         try {
             base64Encode = Base64.getMimeEncoder().encodeToString((userField.getText()

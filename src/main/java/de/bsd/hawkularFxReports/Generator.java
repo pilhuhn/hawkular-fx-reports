@@ -93,7 +93,7 @@ public class Generator implements Runnable {
 
         try {
             JasperReportBuilder reportBuilder = report()
-                    .title(Components.text("Hawkular FX Report for " + main.getBaseUrlFromField())
+                    .title(Components.text("Hawkular FX Report for " + ValueKeeper.getInstance().getBaseUrl())
                             .setHorizontalAlignment(HorizontalAlignment.CENTER)
                             .setStyle(Styles.style().bold()))
                     // The next may look odd, but  we need it for Jasper to render anything
@@ -159,7 +159,7 @@ public class Generator implements Runnable {
     }
 
     private Request getRequestForUrl(String partialUrl, String parameters) {
-        String baseUrl = main.getBaseUrlFromField();
+        String baseUrl = ValueKeeper.getInstance().getBaseUrl();
         String url = baseUrl + partialUrl;
 
         if (parameters!=null) {
@@ -169,13 +169,13 @@ public class Generator implements Runnable {
         return new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("Authorization", "Basic " + main.getBase64Credentials())
+                .addHeader("Authorization", "Basic " + ValueKeeper.getInstance().getBase64Creds())
                 .addHeader("Accept","application/json")
                 .build();
     }
 
 
-    private <T> T mapfromString(String content, TypeReference<T> targetClass) {
+    public static <T> T mapfromString(String content, TypeReference<T> targetClass) {
 
         ObjectMapper mapper = new ObjectMapper();
 
