@@ -16,12 +16,13 @@
  */
 package de.bsd.hawkularFxReports.details;
 
+import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
+
 import java.util.List;
 
 import de.bsd.hawkularFxReports.model.HawkResource;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
-import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.column.Columns;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
@@ -47,9 +48,9 @@ public class UrlResourceDetailBuilder extends AbstractDetailBuilder {
                 Columns.column("Name", "url", String.class).setTitleStyle(bold)
                         , Columns.column("Server", "server", String.class).setTitleStyle(bold)
                         , Columns.column("IP", "ip", String.class).setTitleStyle(bold)
-//                        , Columns.column("Id", "id", String.class).
                 )
-            .detail(DynamicReports.cmp.subreport(new HLChart()))
+            // We can't use .summary here, as this would be one chart for all resources
+            .detail(cmp.subreport(new HiLoChart("Duration", ".status.duration")))
         ;
 
         return report;
@@ -73,7 +74,7 @@ public class UrlResourceDetailBuilder extends AbstractDetailBuilder {
                 row[0] = resource.getProperties().get("url");
                 row[1] = resource.getProperties().get("trait-powered-by");
                 row[2] = resource.getProperties().get("trait-remote-address");
-                row[3] = resource.getId();
+                row[3] = resource.getId(); // Id of the metric to display for the chart
 
                 source.add(row);
             }

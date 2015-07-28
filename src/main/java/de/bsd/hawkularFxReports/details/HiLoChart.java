@@ -44,9 +44,18 @@ import net.sf.jasperreports.engine.design.JRDesignField;
  *
  * @author Heiko W. Rupp
  */
-public class HLChart extends AbstractSimpleExpression<JasperReportBuilder> {
+public class HiLoChart extends AbstractSimpleExpression<JasperReportBuilder> {
 
-    public HLChart() {
+    private String seriesTitle;
+    private String metricIdSuffix;
+
+    public HiLoChart(String seriesTitle) {
+        this(seriesTitle,null);
+    }
+
+    public HiLoChart(String seriesTitle, String metricIdSuffix) {
+        this.seriesTitle = seriesTitle;
+        this.metricIdSuffix = metricIdSuffix;
     }
 
     @Override
@@ -95,16 +104,26 @@ public class HLChart extends AbstractSimpleExpression<JasperReportBuilder> {
 
     public JRDataSource getMetrics(String id) {
 
-        // TODO the next is specific for URL resources, needs to made
-        // more general
-        String partialUrl = "hawkular/metrics/gauges/" + id + ".status.duration/data?buckets=120";
-
         ValueKeeper keeper = ValueKeeper.getInstance();
-        String baseUrl = keeper.getBaseUrl();
-        String url = baseUrl + partialUrl;
+
+        String theId = id;
+        if (metricIdSuffix !=null) {
+            theId+= metricIdSuffix;
+        }
+
+        // We need to escape all the "crap" characters in the id so that the URL conforms
+        // to java.net.URI
+        theId = theId.replaceAll("\\[","%5B");
+        theId = theId.replaceAll("]","%5D");
+        theId = theId.replaceAll(" ","%20");
+        theId = theId.replaceAll("/","%2F");
+
+        String url = keeper.getBaseUrl() +  "hawkular/metrics/gauges/" + theId  + "/data?buckets=120";
 
 
         try {
+
+            System.out.println("Looking for metrics data at " + url);
 
             Request request = new Request.Builder()
                     .url(url)
@@ -116,12 +135,17 @@ public class HLChart extends AbstractSimpleExpression<JasperReportBuilder> {
 
             Response response = new OkHttpClient().newCall(request).execute();
 
+            if (response.code()!=200) {
+                System.err.println("Fetching metrics failed: " + response.toString());
+                return new JREmptyDataSource();
+            }
+
             DRDataSource dataSource = new DRDataSource("series","start","high","avg","low");
             String payload = response.body().string();
             List<Metric> metrics = Generator.mapfromString(payload, new TypeReference<List<Metric>>() { });
 
             for (Metric m : metrics) {
-                dataSource.add("Duration",new Date(m.getStart()),m.getMax(),m.getAvg(),m.getMin());
+                dataSource.add(seriesTitle,new Date(m.getStart()),m.getMax(),m.getAvg(),m.getMin());
             }
 
             return dataSource;

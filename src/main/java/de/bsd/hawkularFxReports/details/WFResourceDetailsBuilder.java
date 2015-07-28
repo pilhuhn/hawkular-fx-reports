@@ -16,6 +16,8 @@
  */
 package de.bsd.hawkularFxReports.details;
 
+import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
+
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +48,8 @@ public class WFResourceDetailsBuilder extends AbstractDetailBuilder {
                        Columns.column("Host", "hostname", String.class).setTitleStyle(bold),
                        Columns.column("Version", "version", String.class).setTitleStyle(bold)
                 )
+                // We can't use .summary here, as this would be one chart for all resources
+                .detail(cmp.subreport(new HiLoChart("Heap usage", null)), cmp.verticalGap(15))
         ;
 
         return report;
@@ -68,15 +72,18 @@ public class WFResourceDetailsBuilder extends AbstractDetailBuilder {
         @Override
         public JRDataSource evaluate(ReportParameters reportParameters) {
 
-            DRDataSource source  = new DRDataSource("name","hostname","version");
+            DRDataSource source  = new DRDataSource("name","hostname","version","id");
 
             for (HawkResource resource : resources) {
-                Object[] row = new Object[3];
+                Object[] row = new Object[4];
                 row[0] = resource.getId();
                 List<Map<String,Object>> resourceConfiguration = (List<Map<String,Object>>) resource.getProperties().get
                         ("resourceConfiguration");
                 row[1] = find(resourceConfiguration,"Hostname");
                 row[2] = find(resourceConfiguration,"Version");
+
+                // http://localhost:8080/hawkular/metrics/gauges/MI~R~%5Bsnert~Local~/%5D~MT~WildFly%20Memory%20Metrics~Heap%20Used/data?buckets=120
+                row[3] = "MI~R~" + resource.getId() + "~MT~WildFly Memory Metrics~Heap Used";
 
                 source.add(row);
             }
