@@ -59,32 +59,39 @@ public class Generator implements Runnable {
     public void run() {
 
         // runs the generation
-        List<String> resourceTypes = getResourceTypesForTenant(tenant);
+        List<ResourceType> resourceTypes = getResourceTypesForCurrentTenant();
+        main.progressBar.setProgress(20.0);
+        if (resourceTypes.isEmpty()) {
+            return;
+        }
+        generateForResourceTypes(resourceTypes);
 
     }
 
 
-    private List<String> getResourceTypesForTenant(String tenant) {
-
+    private List<ResourceType> getResourceTypesForCurrentTenant() {
 
         Request request = getRequestForUrl("hawkular/inventory/resourceTypes", null);
 
-        Response response = null;
+        List<ResourceType> typesMap = Collections.EMPTY_LIST;
         try {
-            response = httpClient.newCall(request).execute();
-        } catch (IOException e) {
-            e.printStackTrace();  // TODO: Customise this generated block
+            Response response = httpClient.newCall(request).execute();
+            String payload = response.body().string();
+
+            typesMap = mapfromString(payload, new TypeReference<List<ResourceType>>() { });
+
+        } catch (Exception e) {
+            e.printStackTrace(); // TODO: Customise this generated block
             main.msgField.setText(e.getMessage());
-            return null;
         }
 
-        main.progressBar.setProgress(20.0);
+        return typesMap;
+
+    }
+
+    private void generateForResourceTypes(List<ResourceType> typesMap) {
 
         try {
-            String payload = response.body().string();
-            List<ResourceType> typesMap = mapfromString(payload,new TypeReference<List<ResourceType>>() {});
-
-
             JasperReportBuilder reportBuilder = report()
                     .title(Components.text("Hawkular FX Report for " + main.getBaseUrlFromField())
                             .setHorizontalAlignment(HorizontalAlignment.CENTER)
@@ -115,11 +122,9 @@ public class Generator implements Runnable {
             reportBuilder.show(true);
             main.progressBar.setProgress(100.0);
 
-        } catch (IOException | DRException e) {
+        } catch (DRException e) {
             e.printStackTrace();  // TODO: Customise this generated block
         }
-
-        return null;  // TODO: Customise this generated block
     }
 
 
