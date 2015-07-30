@@ -21,6 +21,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import java.util.Arrays;
 import java.util.List;
 
+import de.bsd.hawkularFxReports.details.DatasourceResourceDetailBuilder;
 import de.bsd.hawkularFxReports.details.DeploymentResourceDetailBuilder;
 import de.bsd.hawkularFxReports.details.ServletResourceDetailBuilder;
 import de.bsd.hawkularFxReports.details.UrlResourceDetailBuilder;
@@ -39,7 +40,7 @@ public class ResourceDetailFactory {
 
     static {
 
-        types = Arrays.asList("URL","WildFly Server","Deployment");//,"Servlet");
+        types = Arrays.asList("URL","WildFly Server","Deployment","Datasource");//,"Servlet");
     }
 
     public static boolean supports(String type) {
@@ -68,6 +69,12 @@ public class ResourceDetailFactory {
             case "Servlet":
                 builder = cmp.subreport(new ServletResourceDetailBuilder())
                         .setDataSource(new ServletResourceDetailBuilder.ServletResourceDatasource(resources))
+                ;
+                break;
+
+            case "Datasource":
+                builder = cmp.subreport(new DatasourceResourceDetailBuilder())
+                        .setDataSource(new DatasourceResourceDetailBuilder.DatasourceResourceDatasource(resources))
                 ;
                 break;
 

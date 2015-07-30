@@ -91,9 +91,6 @@ public class FxReports extends Application {
         Thread t = new Thread(generator);
         t.start();
 
-        System.err.println("generateEnd");
-
-
     }
     String fetchTenant()  {
 

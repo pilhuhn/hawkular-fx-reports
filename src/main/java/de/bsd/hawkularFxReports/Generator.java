@@ -118,7 +118,7 @@ public class Generator implements Runnable {
 
             }
 
-            // Show the report
+            // Show the report and exit on close. This .show() will trigger the real data fetching
             reportBuilder.show(true);
             main.progressBar.setProgress(100.0);
 

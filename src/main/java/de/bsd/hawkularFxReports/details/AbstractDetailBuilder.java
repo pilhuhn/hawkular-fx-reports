@@ -31,14 +31,12 @@ import net.sf.dynamicreports.report.builder.style.Styles;
  */
 public abstract class AbstractDetailBuilder extends AbstractSimpleExpression<JasperReportBuilder> {
 
-    private final String title;
     StyleBuilder bold = Styles.style().bold();
 
     JasperReportBuilder report;
 
     public AbstractDetailBuilder(String title) {
         super();
-        this.title = title;
 
         report = report()
                 .title(cmp.text(title)

@@ -16,8 +16,6 @@
  */
 package de.bsd.hawkularFxReports.details;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
-
 import java.util.List;
 
 import de.bsd.hawkularFxReports.model.HawkResource;
@@ -29,42 +27,36 @@ import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
- * Report about URL resources in Hawkular
+ * Report about servlets in Hawkular
  *
  * @author Heiko W. Rupp
  */
-public class UrlResourceDetailBuilder extends AbstractDetailBuilder {
+public class DatasourceResourceDetailBuilder extends AbstractDetailBuilder {
 
 
 
-    public UrlResourceDetailBuilder() {
-        super("URL Resources");
+    public DatasourceResourceDetailBuilder() {
+        super("Datasources");
     }
 
     @Override
     public JasperReportBuilder evaluate(ReportParameters reportParameters) {
 
         report.columns(
-                Columns.column("Name", "url", String.class).setTitleStyle(bold),
-                Columns.column("Server", "server", String.class)
-                        .setTitleStyle(bold)
-                        .setStretchWithOverflow(true),
-                Columns.emptyColumn().setFixedWidth(10),
-                Columns.column("IP", "ip", String.class)
-                        .setTitleStyle(bold)
-//                        .setHorizontalAlignment(HorizontalAlignment.RIGHT)
+                Columns.column("Name", "name", String.class).setTitleStyle(bold),
+                Columns.column("Server", "server", String.class).setTitleStyle(bold)
+//                Columns.column("Available Connections", "avail_connections", Integer.class).setTitleStyle(bold)
                 )
-            // We can't use .summary here, as this would be one chart for all resources
-            .detail(cmp.subreport(new HiLoChart("Duration", ".status.duration")))
+//                .detail(cmp.subreport(new HiLoChart("Used Connections", null)), cmp.verticalGap(15))
         ;
 
         return report;
     }
 
-    public static class UrlResourceDatasource extends AbstractSimpleExpression<JRDataSource> {
+    public static class DatasourceResourceDatasource extends AbstractSimpleExpression<JRDataSource> {
         private List<HawkResource> resources;
 
-        public UrlResourceDatasource(List<HawkResource> resources) {
+        public DatasourceResourceDatasource(List<HawkResource> resources) {
             this.resources = resources;
         }
 
@@ -72,14 +64,20 @@ public class UrlResourceDetailBuilder extends AbstractDetailBuilder {
         @Override
         public JRDataSource evaluate(ReportParameters reportParameters) {
 
-            DRDataSource source  = new DRDataSource("url","server","ip","id");
+            DRDataSource source  = new DRDataSource("name","server","id");
 
             for (HawkResource resource : resources) {
-                Object[] row = new Object[4];
-                row[0] = resource.getProperties().get("url");
-                row[1] = resource.getProperties().get("trait-powered-by");
-                row[2] = resource.getProperties().get("trait-remote-address");
-                row[3] = resource.getId(); // Id of the metric to display for the chart
+                Object[] row = new Object[3];
+                String name = (String) resource.getProperties().get("name");
+                name = name.substring(12);
+                name = name.substring(0,name.length()-1);
+                row[0] = name;
+                row[1] = resource.getId().substring(0,resource.getId().indexOf("/")-1);
+
+//                http://localhost:8080/hawkular/metrics/gauges/MI~R~[snert~Local~/subsystem=datasources/data-source
+//                // =HawkularDS]~MT~~/data?buckets=60&end=1438257339560&start=1438253739560
+//                //MI~R~[snert~Local~/subsystem=datasources/data-source=KeycloakDS]~MT~Datasource Pool Metrics~In Use Count
+                row[2] = "MI~R~[" + resource.getId() + "]~MT~Datasource Pool Metrics~In Use Count";
 
                 source.add(row);
             }
@@ -88,5 +86,4 @@ public class UrlResourceDetailBuilder extends AbstractDetailBuilder {
 
         }
     }
-
 }

@@ -83,7 +83,7 @@ public class WFResourceDetailsBuilder extends AbstractDetailBuilder {
                 row[2] = find(resourceConfiguration,"Version");
 
                 // http://localhost:8080/hawkular/metrics/gauges/MI~R~%5Bsnert~Local~/%5D~MT~WildFly%20Memory%20Metrics~Heap%20Used/data?buckets=120
-                row[3] = "MI~R~" + resource.getId() + "~MT~WildFly Memory Metrics~Heap Used";
+                row[3] = "MI~R~[" + resource.getId() + "]~MT~WildFly Memory Metrics~Heap Used";
 
                 source.add(row);
             }
