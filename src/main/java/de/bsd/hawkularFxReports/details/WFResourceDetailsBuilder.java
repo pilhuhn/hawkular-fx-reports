@@ -21,6 +21,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import java.util.List;
 import java.util.Map;
 
+import de.bsd.hawkularFxReports.ValueKeeper;
 import de.bsd.hawkularFxReports.model.HawkResource;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
@@ -48,9 +49,11 @@ public class WFResourceDetailsBuilder extends AbstractDetailBuilder {
                        Columns.column("Host", "hostname", String.class).setTitleStyle(bold),
                        Columns.column("Version", "version", String.class).setTitleStyle(bold)
                 )
-                // We can't use .summary here, as this would be one chart for all resources
-                .detail(cmp.subreport(new HiLoChart("Heap usage", null)), cmp.verticalGap(15))
-        ;
+                ;
+        if (ValueKeeper.getInstance().isShowCharts()) {
+            // We can't use .summary here, as this would be one chart for all resources
+            report.detail(cmp.subreport(new HiLoChart("Heap usage", null)), cmp.verticalGap(15));
+        }
 
         return report;
     }

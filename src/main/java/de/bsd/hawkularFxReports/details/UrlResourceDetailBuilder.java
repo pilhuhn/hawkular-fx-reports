@@ -20,6 +20,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 
 import java.util.List;
 
+import de.bsd.hawkularFxReports.ValueKeeper;
 import de.bsd.hawkularFxReports.model.HawkResource;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
@@ -54,9 +55,11 @@ public class UrlResourceDetailBuilder extends AbstractDetailBuilder {
                         .setTitleStyle(bold)
 //                        .setHorizontalAlignment(HorizontalAlignment.RIGHT)
                 )
+                ;
+        if (ValueKeeper.getInstance().isShowCharts()) {
             // We can't use .summary here, as this would be one chart for all resources
-            .detail(cmp.subreport(new HiLoChart("Duration", ".status.duration")))
-        ;
+            report.detail(cmp.subreport(new HiLoChart("Duration", ".status.duration")));
+        }
 
         return report;
     }

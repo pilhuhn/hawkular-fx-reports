@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
-<Pane stylesheets="@fextile.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-       fx:controller="de.bsd.hawkularFxReports.FxReports">
+<Pane stylesheets="@fextile.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.bsd.hawkularFxReports.FxReports">
    <children>
       <GridPane hgap="4.0" vgap="4.0">
          <children>
@@ -22,10 +21,11 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </Button>
-           <TextField fx:id="msgField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <Label text="Messages" GridPane.rowIndex="8" />
+           <TextField fx:id="msgField" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Label text="Messages" GridPane.rowIndex="9" />
             <Label text="Range" visible="false" GridPane.rowIndex="5" />
-            <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="296.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="296.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <CheckBox fx:id="showChartBox" mnemonicParsing="false" selected="true" text="Show charts" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <!--<ComboBox fx:id="timeRangeCombo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />-->
          </children>
          <columnConstraints>
@@ -41,8 +41,10 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <padding>
             <Insets bottom="30.0" left="20.0" right="20.0" top="20.0" />

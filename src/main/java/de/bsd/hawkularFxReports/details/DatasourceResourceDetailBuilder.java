@@ -16,8 +16,11 @@
  */
 package de.bsd.hawkularFxReports.details;
 
+import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
+
 import java.util.List;
 
+import de.bsd.hawkularFxReports.ValueKeeper;
 import de.bsd.hawkularFxReports.model.HawkResource;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
@@ -47,8 +50,10 @@ public class DatasourceResourceDetailBuilder extends AbstractDetailBuilder {
                 Columns.column("Server", "server", String.class).setTitleStyle(bold)
 //                Columns.column("Available Connections", "avail_connections", Integer.class).setTitleStyle(bold)
                 )
-//                .detail(cmp.subreport(new HiLoChart("Used Connections", null)), cmp.verticalGap(15))
-        ;
+                ;
+        if (ValueKeeper.getInstance().isShowCharts()) {
+            report.detail(cmp.subreport(new HiLoChart("Used Connections", null)), cmp.verticalGap(15));
+        }
 
         return report;
     }

@@ -12,6 +12,7 @@ public class ValueKeeper {
     private String tenantId;
     private String baseUrl;
     private String base64Creds;
+    private boolean showCharts;
 
     public static ValueKeeper getInstance() {
         return ourInstance;
@@ -50,5 +51,13 @@ public class ValueKeeper {
 
     public void setBase64Creds(String base64Creds) {
         this.base64Creds = base64Creds;
+    }
+
+    public void setShowCharts(boolean showCharts) {
+        this.showCharts = showCharts;
+    }
+
+    public boolean isShowCharts() {
+        return showCharts;
     }
 }

@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -70,6 +71,9 @@ public class FxReports extends Application {
     ProgressBar progressBar;
 
     @FXML
+    CheckBox showChartBox;
+
+    @FXML
     void generateReport(ActionEvent event) {
 
         progressBar.setProgress(0.0);
@@ -81,10 +85,12 @@ public class FxReports extends Application {
             return;
         }
         progressBar.setProgress(10.0);
-        ValueKeeper.getInstance().setTenantId(tenant);
-        ValueKeeper.getInstance().setUser(userField.getText());
-        ValueKeeper.getInstance().setBaseUrl(getBaseUrlFromField());
-        ValueKeeper.getInstance().setBase64Creds(getBase64Credentials());
+        ValueKeeper keeper = ValueKeeper.getInstance();
+        keeper.setTenantId(tenant);
+        keeper.setUser(userField.getText());
+        keeper.setBaseUrl(getBaseUrlFromField());
+        keeper.setBase64Creds(getBase64Credentials());
+        keeper.setShowCharts(showChartBox.isSelected());
 
 
         Generator generator = new Generator(this, tenant);
