@@ -10,6 +10,7 @@ package de.bsd.hawkularFxReports;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Base64;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,11 +78,11 @@ public class FxReports extends Application {
     void generateReport(ActionEvent event) {
 
         progressBar.setProgress(0.0);
+        msgField.setText("");
         System.out.println("generate pressed");
         String tenant = fetchTenant();
 
         if (tenant == null) {
-            msgField.setText("Can't connect to server.");
             return;
         }
         progressBar.setProgress(10.0);
@@ -116,8 +117,11 @@ public class FxReports extends Application {
         Response response = null;
         try {
             response = httpClient.newCall(request).execute();
+        } catch (UnknownHostException e) {
+            msgField.setText("Can't connect, host is unknown");
+            return null;
         } catch (IOException e) {
-            e.printStackTrace();  // TODO: Customise this generated block
+            e.printStackTrace();
             msgField.setText(e.getMessage());
             return null;
         }
